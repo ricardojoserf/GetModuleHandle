@@ -8,4 +8,4 @@ It is the same idea than Sektor7's Malware Intermediate course by [reenz0h](http
 
 There is a binary to test the functionality: 
 
-![img](https://raw.githubusercontent.com/ricardojoserf/ricardojoserf.github.io/master/images/getModuleHandle/Screenshot_1.png)
+![img](https://raw.githubusercontent.com/ricardojoserf/ricardojoserf.github.io/master/images/getModuleHandle/Screenshot_2.png)
