@@ -1,11 +1,20 @@
-# GetModuleHandle - C# implementation
+# GetModuleHandle - Custom implementation in C#
 
-This function takes a DLL name, walks the PEB (Ldr) and returns the DLL base address. 
+It works like the [GetModuleHandle](https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getmodulehandlea) WinAPI: it takes a DLL name, walks the PEB structure and returns the DLL base address. 
 
-It works like the [GetModuleHandle](https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getmodulehandlea) function so it is useful if you want to avoid using it. This implementation uses only the NtQueryInformationProcess API call.
+It only uses the [NtQueryInformationProcess](https://learn.microsoft.com/en-us/windows/win32/api/winternl/nf-winternl-ntqueryinformationprocess) native API call, without using structs.
 
-It is the same idea than Sektor7's Malware Intermediate course by [reenz0h](https://twitter.com/reenz0h), but in that course the code is C++ and I wanted a implementation like this in C#, I could not find it so maybe this is useful for someone else.
-
-There is a binary to test the functionality: 
+It works in both 32-bit and 64-bit processes. You can test this using the binaries in the Releases section: 
 
 ![img](https://raw.githubusercontent.com/ricardojoserf/ricardojoserf.github.io/master/images/getModuleHandle/Screenshot_2.png)
+
+
+-----------------------------------
+
+### Sources
+
+- Sektor7's Malware Intermediate course by [reenz0h](https://twitter.com/reenz0h) implements this code in C++
+
+- tebpeb32.h: [https://bytepointer.com/resources/tebpeb32.htm](https://bytepointer.com/resources/tebpeb64.htm)
+
+- tebpeb64.h: [https://bytepointer.com/resources/tebpeb64.htm](https://bytepointer.com/resources/tebpeb64.htm)
