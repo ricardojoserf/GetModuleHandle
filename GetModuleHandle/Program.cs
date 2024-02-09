@@ -16,8 +16,26 @@ namespace GetModuleHandle
             out IntPtr returnLength
         );
 
-        public unsafe static IntPtr CustomGetModuleHandle(String dll_name, uint process_basic_information_size, int peb_offset, int ldr_offset, int inInitializationOrderModuleList_offset, int flink_dllbase_offset, int flink_buffer_offset)
+        public unsafe static IntPtr CustomGetModuleHandle(String dll_name)
         {
+            uint process_basic_information_size = 48;
+            int peb_offset = 0x8;
+            int ldr_offset = 0x18;
+            int inInitializationOrderModuleList_offset = 0x30;
+            int flink_dllbase_offset = 0x20;
+            int flink_buffer_offset = 0x50;
+            // If 32-bit process these offsets change
+            if (IntPtr.Size == 4)
+            {
+                process_basic_information_size = 24;
+                peb_offset = 0x4;
+                ldr_offset = 0x0c;
+                inInitializationOrderModuleList_offset = 0x1c;
+                flink_dllbase_offset = 0x18;
+                flink_buffer_offset = 0x30;
+            }
+
+            // Get current process handle
             IntPtr hProcess = Process.GetCurrentProcess().Handle;
 
             // Create byte array with the size of the PROCESS_BASIC_INFORMATION structure
@@ -84,17 +102,7 @@ namespace GetModuleHandle
                 System.Environment.Exit(0);
             }
             string dll_name = args[0];
-            IntPtr base_address = IntPtr.Zero;
-            if (IntPtr.Size == 4)
-            {
-                Console.WriteLine("[+] 32-bit process");
-                base_address = CustomGetModuleHandle(dll_name, 24, 0x4, 0x0c, 0x1c, 0x18, 0x30);
-            }
-            else if (IntPtr.Size == 8)
-            {
-                Console.WriteLine("[+] 64-bit process");
-                base_address = CustomGetModuleHandle(dll_name, 48, 0x8, 0x18, 0x30, 0x20, 0x50);
-            }
+            IntPtr base_address = CustomGetModuleHandle(dll_name);
             
             if (base_address == IntPtr.Zero)
             {
